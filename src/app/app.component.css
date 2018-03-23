@@ -1,0 +1,33 @@
+html,
+body {
+    height: 100%;
+}
+
+.container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+div#input {
+    padding-top: 10%;
+}
+
+p{
+    margin-top: 2%;
+    margin-left: -20%;
+    margin-bottom: 1rem;
+}
+
+input.form-control.ng-pristine.ng-valid.ng-touched {
+    width: 15%;
+}
+
+button.btn.btn-outline-primary {
+    margin-top: 1%;
+}
+
+/* div {
+    margin-left: 2%;
+    margin-top: 2%;
+} */
