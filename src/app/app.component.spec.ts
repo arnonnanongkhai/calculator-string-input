@@ -29,9 +29,31 @@ describe('AppComponent', () => {
   }));
 
   it('test method cal', async(() => {
-    fixture.componentInstance.inputCal = '1 + 1';
-    fixture.componentInstance.cal();
-    expect(fixture.componentInstance.value).toEqual(2);
+    component.inputCal = '1 + 1';
+    component.cal();
+    expect(component.value).toEqual(2);
+  }));
+
+  it('test method _infixToPostfix 1 + 50 / 20 * (1 + 1)', async(() => {
+    component.inputCal = '1 + 50 / 20 * (1 + 1)';
+    expect(component['_infixToPostfix']()).toEqual(' 1 50 20 / 1 1 + * +');
+  }));
+
+  it('test method _precedence', async(() => {
+    expect(component['_precedence']('+')).toEqual(1);
+  }));
+
+  it('test method _isNumber +', async(() => {
+    expect(component['_isNumber']('+')).toEqual(false);
+  }));
+
+  it('test method _isNumber 50', async(() => {
+    expect(component['_isNumber']('50')).toEqual(true);
+  }));
+
+  it('test method _postfixCalculator 1 50 20 / 1 1 + * +', async(() => {
+    expect(component['_postfixCalculator']('1 50 20 / 1 1 + * +')).toEqual(6);
+
   }));
 
   it('input 1 + 1', async(() => {
@@ -179,4 +201,121 @@ describe('AppComponent', () => {
       expect(value.nativeElement.textContent).toEqual('0.6');
     });
   }));
+
+  // ---------------------------------------------------------------------------------
+
+
+  it('input 1 + 1 + 3 + 5 + 4', async(() => {
+
+    const elementInput = fixture.debugElement.query(By.css('input')).nativeElement;
+    elementInput.value = '1 + 1 + 3 + 5 + 4';
+    elementInput.dispatchEvent(new Event('input'));
+
+    const elementBtn = fixture.debugElement.nativeElement.querySelector('button');
+    elementBtn.click();
+
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      const value = fixture.debugElement.query(By.css('h2'));
+      expect(value.nativeElement.textContent).toEqual('14');
+    });
+  }));
+
+  it('input 1 * 2 * 3 * 4 * 5', async(() => {
+
+    const elementInput = fixture.debugElement.query(By.css('input')).nativeElement;
+    elementInput.value = '1 * 2 * 3 * 4 * 5';
+    elementInput.dispatchEvent(new Event('input'));
+
+    const elementBtn = fixture.debugElement.nativeElement.querySelector('button');
+    elementBtn.click();
+
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      const value = fixture.debugElement.query(By.css('h2'));
+      expect(value.nativeElement.textContent).toEqual('120');
+    });
+  }));
+
+  it('input 1 + 2 * 3 - 1 / 20', async(() => {
+
+    const elementInput = fixture.debugElement.query(By.css('input')).nativeElement;
+    elementInput.value = '1 + 2 * 3 - 1 / 20';
+    elementInput.dispatchEvent(new Event('input'));
+
+    const elementBtn = fixture.debugElement.nativeElement.querySelector('button');
+    elementBtn.click();
+
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      const value = fixture.debugElement.query(By.css('h2'));
+      expect(value.nativeElement.textContent).toEqual('6.95');
+    });
+  }));
+
+  it('input 1 / 20 / 30 * 50 + 10', async(() => {
+
+    const elementInput = fixture.debugElement.query(By.css('input')).nativeElement;
+    elementInput.value = '1 / 20 / 30 * 50 + 10';
+    elementInput.dispatchEvent(new Event('input'));
+
+    const elementBtn = fixture.debugElement.nativeElement.querySelector('button');
+    elementBtn.click();
+
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      const value = fixture.debugElement.query(By.css('h2'));
+      expect(value.nativeElement.textContent).toEqual('10.083333333333334');
+    });
+  }));
+
+  it('input 1 + (29 + 45) * 100', async(() => {
+
+    const elementInput = fixture.debugElement.query(By.css('input')).nativeElement;
+    elementInput.value = '1 + (29 + 45) * 100';
+    elementInput.dispatchEvent(new Event('input'));
+
+    const elementBtn = fixture.debugElement.nativeElement.querySelector('button');
+    elementBtn.click();
+
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      const value = fixture.debugElement.query(By.css('h2'));
+      expect(value.nativeElement.textContent).toEqual('7401');
+    });
+  }));
+
+  it('input 1 + 50 / 20 * (1 + 1)', async(() => {
+
+    const elementInput = fixture.debugElement.query(By.css('input')).nativeElement;
+    elementInput.value = '1 + 50 / 20 * (1 + 1)';
+    elementInput.dispatchEvent(new Event('input'));
+
+    const elementBtn = fixture.debugElement.nativeElement.querySelector('button');
+    elementBtn.click();
+
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      const value = fixture.debugElement.query(By.css('h2'));
+      expect(value.nativeElement.textContent).toEqual('6');
+    });
+  }));
+
+  it('input 90 / 10 * (20 + 0) - 1', async(() => {
+
+    const elementInput = fixture.debugElement.query(By.css('input')).nativeElement;
+    elementInput.value = '90 / 10 * (20 + 0) - 1';
+    elementInput.dispatchEvent(new Event('input'));
+
+    const elementBtn = fixture.debugElement.nativeElement.querySelector('button');
+    elementBtn.click();
+
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      const value = fixture.debugElement.query(By.css('h2'));
+      expect(value.nativeElement.textContent).toEqual('179');
+    });
+  }));
+
+
 });
