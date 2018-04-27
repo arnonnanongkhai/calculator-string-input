@@ -27,11 +27,31 @@ export class AppComponent {
     this.infix = this._infixToPostfix();
     // tslint:disable-next-line:no-console
     console.info('this.infix: ', this.infix);
-    this.value = this._postfixCalculator(this.infix);
+    // this.value = this._postfixCalculator(this.infix);
+    this.value = this._isInt(this._postfixCalculator(this.infix));
+    this._cdr.markForCheck();
     // tslint:disable-next-line:no-console
     console.info('this.value: ', this.value);
     // tslint:disable-next-line:no-console
     console.info('>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<');
+  }
+
+  /**
+   *
+   *
+   * @private
+   * @param {any} n
+   * @returns
+   * @memberof AppComponent
+   */
+  private _isInt(n: any) {
+    if (!this._isNumber(n) || n === Infinity) {
+      return n;
+    }
+    if (!(n % 1 === 0) && (n + '').split('.')[1].length > 3) {
+      return parseFloat(n.toFixed(10));
+    }
+    return n;
   }
 
   /**

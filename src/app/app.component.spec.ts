@@ -265,7 +265,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     fixture.whenStable().then(() => {
       const value = fixture.debugElement.query(By.css('h2'));
-      expect(value.nativeElement.textContent).toEqual('10.083333333333334');
+      expect(value.nativeElement.textContent).toEqual('10.0833333333');
     });
   }));
 
